@@ -1,0 +1,29 @@
+.siteNavigation {
+  padding: 10px;
+  background: #0961c3;
+}
+
+.menu {
+  display: flex;
+  justify-content: left;
+}
+
+.menuList {
+  margin-right: 50px;
+  text-transform: uppercase;
+  list-style: none;
+}
+
+.link {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.link:hover,
+.link:focus {
+  color: #09c3be;
+}
+
+.activeLink {
+  color: #09c3be;
+}
