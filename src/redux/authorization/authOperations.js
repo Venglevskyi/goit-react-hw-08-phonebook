@@ -1,32 +1,70 @@
-import AuthActions from './authActions';
+import authActions from './authActions';
 
 const baseUrl = 'https://goit-phonebook-api.herokuapp.com/users';
-const setHeaders = headers => {
+const setOption = user => {
   return {
-    Authorization:
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZThiMTRkM2MzNWY3ODAwMTc4ZDIzZjIiLCJpYXQiOjE1ODYxNzMxMzl9.r4SYBtLre0QOTAzenRRY0vSBw39RaPzGFE9RBV7XHOQ',
-    ...headers,
-  };
-};
-
-const register = (name, email, password) => dispatch => {
-  dispatch(AuthActions.registerRequest());
-
-  const user = {
-    name,
-    email,
-    password,
-  };
-  const option = {
     method: 'POST',
-    headers: setHeaders({ 'Content-Type': 'application/json' }),
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(user),
   };
-
-  fetch(`${baseUrl}/signup`, option)
-    .then(response => console.log(response.json()))
-    .then(data => dispatch(AuthActions.registerSuccess(data)))
-    .catch(error => dispatch(AuthActions.registerError(error)));
+};
+const setToken = token => {
+  return {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  };
 };
 
-export default { register };
+const register = user => dispatch => {
+  dispatch(authActions.registerRequest());
+
+  fetch(`${baseUrl}/signup`, setOption(user))
+    .then(response => response.json())
+    .then(data => dispatch(authActions.registerSuccess(data)))
+    .catch(error => dispatch(authActions.registerError(error)));
+};
+
+const logIn = user => dispatch => {
+  dispatch(authActions.loginRequest());
+
+  fetch(`${baseUrl}/login`, setOption(user))
+    .then(response => response.json())
+    .then(data => dispatch(authActions.loginSuccess(data)))
+    .catch(error => dispatch(authActions.loginError(error)));
+};
+
+const logOut = token => dispatch => {
+  dispatch(authActions.logoutRequest());
+
+  const option = {
+    method: 'POST',
+    headers: setToken(token),
+  };
+
+  fetch(`${baseUrl}/logout`, option)
+    .then(response => response.json())
+    .then(() => dispatch(authActions.logoutSuccess()))
+    .catch(error => dispatch(authActions.logoutError(error)));
+};
+
+const getCurrentUser = () => (dispatch, getState) => {
+  const {
+    auth: { token: persistedToken },
+  } = getState();
+
+  if (!persistedToken) {
+    return;
+  }
+  dispatch(authActions.getCurrentUserRequest());
+  const option = {
+    method: 'GET',
+    headers: setToken(persistedToken),
+  };
+
+  fetch(`${baseUrl}/current`, option)
+    .then(response => response.json())
+    .then(data => dispatch(authActions.getCurrentUserSuccess(data)))
+    .catch(error => dispatch(authActions.getCurrentUserError(error)));
+};
+
+export default { register, logIn, logOut, getCurrentUser };

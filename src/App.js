@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-// import HomePage from './pages/HomePage';
-// import MovieDetailsPage from './pages/MovieDetailsPage'
-// import MoviesPage from './pages/MoviesPage';
 import HomeViews from './Views/HomeViews/HomeViews';
 import RegisterViews from './Views/RegisterViews/RegisterViews';
+import LoginViews from './Views/LoginViews/LoginViews';
 import Layout from './Components/Layout/Layout';
 // import NotFound from './pages/Notfound';
 
 import routes from './routes';
+import { authOperations } from './redux/authorization';
 
-const App = () => (
-  <Layout>
-    <Switch>
-      <Route exact path={routes.Home} component={HomeViews}></Route>
-      <Route exact path={routes.Register} component={RegisterViews}></Route>
-      {/* <Route exact path={routes.Register} component={RegisterViews}></Route> */}
-      {/* <Route exact path={routes.Register} component={RegisterViews}></Route>
+class App extends Component {
+  componentDidMount() {
+    this.props.onGetCurrentUser();
+  }
+
+  render() {
+    return (
+      <Layout>
+        <Switch>
+          <Route exact path={routes.Home} component={HomeViews}></Route>
+          <Route exact path={routes.Register} component={RegisterViews}></Route>
+          <Route path={routes.Login} component={LoginViews}></Route>
+          {/* <Route exact path={routes.Register} component={RegisterViews}></Route>
       <Route path={routes.Login} component={LoginViews}></Route>
       <Route component={NotFound} /> */}
-    </Switch>
-  </Layout>
-);
+        </Switch>
+      </Layout>
+    );
+  }
+}
 
-export default App;
+const mapDispatchToProps = {
+  onGetCurrentUser: authOperations.getCurrentUser,
+};
+
+export default connect(null, mapDispatchToProps)(App);

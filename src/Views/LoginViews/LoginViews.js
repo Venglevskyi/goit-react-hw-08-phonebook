@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import authActions from '../../redux/authorization/authActions';
 import { authOperations } from '../../redux/authorization';
 
-import styles from './registerViews.module.css';
+import styles from '../RegisterViews/registerViews.module.css';
 
-class RegisterViews extends Component {
+class LoginViews extends Component {
   state = {
-    name: '',
     email: '',
     password: '',
   };
@@ -19,31 +17,20 @@ class RegisterViews extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onRegister({ ...this.state });
-    this.setState({ name: '', email: '', password: '' });
+    this.props.onLogin({ ...this.state });
+    this.setState({ email: '', password: '' });
   };
 
   render() {
-    const { name, email, password } = this.state;
+    const { email, password } = this.state;
 
     return (
       <div>
         <h2 className={styles.title}>
-          Пожалуйста, заполните эту форму, чтобы создать учетную запись
+          Для входа в учетную запись, пожалуйста, введите свой електронный адрес и пароль
         </h2>
 
         <form onSubmit={this.handleSubmit} className={styles.form}>
-          <label className={styles.formLabel}>
-            Name
-            <input
-              className={styles.formInput}
-              type="text"
-              name="name"
-              value={name}
-              onChange={this.handleChange}
-            />
-          </label>
-
           <label className={styles.formLabel}>
             Email
             <input
@@ -67,7 +54,7 @@ class RegisterViews extends Component {
           </label>
 
           <button className={styles.formButton} type="submit">
-            Register
+            Login
           </button>
         </form>
       </div>
@@ -76,7 +63,7 @@ class RegisterViews extends Component {
 }
 
 const mapDispatchToProps = {
-  onRegister: authOperations.register,
+  onLogin: authOperations.logIn,
 };
 
-export default connect(null, mapDispatchToProps)(RegisterViews);
+export default connect(null, mapDispatchToProps)(LoginViews);

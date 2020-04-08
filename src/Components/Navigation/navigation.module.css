@@ -1,6 +1,9 @@
 .siteNavigation {
   padding: 10px;
   background: #0961c3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .menu {
