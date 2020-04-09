@@ -1,5 +1,9 @@
+.container {
+  padding-bottom: 12px;
+}
+
 .title {
-    text-align: center;
+  text-align: center;
 }
 
 .form {

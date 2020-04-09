@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// import authActions from '../../redux/authorization/authActions';
 import { authOperations } from '../../redux/authorization';
 
-import styles from '../RegisterViews/registerViews.module.css';
+import styles from './registerViews.module.css';
 
-class LoginViews extends Component {
+class RegisterView extends Component {
   state = {
+    name: '',
     email: '',
     password: '',
   };
@@ -17,20 +19,31 @@ class LoginViews extends Component {
   handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onLogin({ ...this.state });
-    this.setState({ email: '', password: '' });
+    this.props.onRegister({ ...this.state });
+    this.setState({ name: '', email: '', password: '' });
   };
 
   render() {
-    const { email, password } = this.state;
+    const { name, email, password } = this.state;
 
     return (
-      <div>
+      <div className={styles.container}>
         <h2 className={styles.title}>
-          Для входа в учетную запись, пожалуйста, введите свой електронный адрес и пароль
+          Пожалуйста, заполните эту форму, чтобы создать учетную запись
         </h2>
 
         <form onSubmit={this.handleSubmit} className={styles.form}>
+          <label className={styles.formLabel}>
+            Name
+            <input
+              className={styles.formInput}
+              type="text"
+              name="name"
+              value={name}
+              onChange={this.handleChange}
+            />
+          </label>
+
           <label className={styles.formLabel}>
             Email
             <input
@@ -54,7 +67,7 @@ class LoginViews extends Component {
           </label>
 
           <button className={styles.formButton} type="submit">
-            Login
+            Register
           </button>
         </form>
       </div>
@@ -63,7 +76,7 @@ class LoginViews extends Component {
 }
 
 const mapDispatchToProps = {
-  onLogin: authOperations.logIn,
+  onRegister: authOperations.register,
 };
 
-export default connect(null, mapDispatchToProps)(LoginViews);
+export default connect(null, mapDispatchToProps)(RegisterView);

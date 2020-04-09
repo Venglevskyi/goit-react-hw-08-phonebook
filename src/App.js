@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import HomeViews from './Views/HomeViews/HomeViews';
-import RegisterViews from './Views/RegisterViews/RegisterViews';
-import LoginViews from './Views/LoginViews/LoginViews';
+import HomeView from './Views/HomeView/HomeView';
+import RegisterView from './Views/RegisterView/RegisterView';
+import LoginView from './Views/LoginView/LoginView';
+import Phonebook from './Views/Phonebook/Phonebook';
+import NotFoundView from './Views/NotFoundView/NotFoundView';
 import Layout from './Components/Layout/Layout';
-// import NotFound from './pages/Notfound';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import PublicRoute from './Components/PublicRoute/PublicRoute';
 
 import routes from './routes';
 import { authOperations } from './redux/authorization';
@@ -20,12 +23,26 @@ class App extends Component {
     return (
       <Layout>
         <Switch>
-          <Route exact path={routes.Home} component={HomeViews}></Route>
-          <Route exact path={routes.Register} component={RegisterViews}></Route>
-          <Route path={routes.Login} component={LoginViews}></Route>
-          {/* <Route exact path={routes.Register} component={RegisterViews}></Route>
-      <Route path={routes.Login} component={LoginViews}></Route>
-      <Route component={NotFound} /> */}
+          <PublicRoute
+            exact
+            path={routes.Home}
+            restricted={false}
+            component={HomeView}
+          />
+          <PublicRoute
+            exact
+            path={routes.Register}
+            restricted={true}
+            component={RegisterView}
+          />
+          <PublicRoute
+            exact
+            path={routes.Login}
+            restricted={true}
+            component={LoginView}
+          />
+          <PrivateRoute exact path={routes.Contacts} component={Phonebook} />
+          <Route component={NotFoundView} />
         </Switch>
       </Layout>
     );
