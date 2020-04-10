@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getContacts } from '../../redux/contacts/contactsOperations';
 import {
   getLoadingContact,
@@ -117,6 +118,19 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onGetContacts: getContacts,
+};
+
+Phonebook.propTypes = {
+  isLoadingContact: PropTypes.bool.isRequired,
+  errorServer: PropTypes.bool.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.exact({
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+    }),
+  ),
+  onGetContacts: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Phonebook);

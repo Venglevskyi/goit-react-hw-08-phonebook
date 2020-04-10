@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { authOperations } from '../../redux/authorization';
 
 import styles from '../RegisterView/registerViews.module.css';
@@ -64,6 +65,10 @@ class LoginView extends Component {
 
 const mapDispatchToProps = {
   onLogin: authOperations.logIn,
+};
+
+LoginView.propTypes = {
+  onLogin: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(LoginView);

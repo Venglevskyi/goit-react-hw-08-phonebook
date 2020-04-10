@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { authOperations, authSelectors } from '../../redux/authorization';
 import userImage from '../../images/137-1370051_avatar-generic-avatar-hd-png-download.png';
@@ -26,6 +27,16 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   onLogout: authOperations.logOut,
+};
+
+UserMenu.defaultProps = {
+  userEmail: null,
+};
+
+UserMenu.propTypes = {
+  token: PropTypes.string.isRequired,
+  userEmail: PropTypes.string,
+  onLogout: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserMenu);
